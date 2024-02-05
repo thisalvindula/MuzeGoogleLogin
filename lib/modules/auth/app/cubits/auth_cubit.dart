@@ -14,11 +14,13 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit({required this.authDomainRepository}) : super(const AuthState());
 
   // LOGIN
-  Future<void> login({required String username, required String password}) async {
-    final APIResponse myResponse = await authDomainRepository.login(username: username, password: password);
+  Future<void> login(
+      {required String username, required String password}) async {
+    final APIResponse myResponse = await authDomainRepository.login(
+        username: username, password: password);
 
     if (myResponse.message == null) throw "Null";
-    if (myResponse.message == "Invalid Credential.") throw "Invalid Credential.";
+    if (myResponse.message == "Invalid Credential.") throw "Invalid Credential";
 
     String token = myResponse.data!["content"]["token"];
 
@@ -29,10 +31,19 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // REGISTER
-  Future<void> register({required String username, required String email, required String password, required String passwordConfirmation}) async {
-    final APIResponse myResponse = await authDomainRepository.register(username: username, email: email, password: password, passwordConfirmation: passwordConfirmation);
+  Future<void> register(
+      {required String username,
+      required String email,
+      required String password,
+      required String passwordConfirmation}) async {
+    final APIResponse myResponse = await authDomainRepository.register(
+        username: username,
+        email: email,
+        password: password,
+        passwordConfirmation: passwordConfirmation);
 
     if (myResponse.data == null) throw "";
+    print(myResponse);
 
     String token = myResponse.data!["content"]["token"];
     saveToken(token: token);

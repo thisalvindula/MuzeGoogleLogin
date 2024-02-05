@@ -25,26 +25,39 @@ class DisconnectButton extends StatelessWidget {
           width: AppSize.getWidth(context) / 1.3,
           decoration: BoxDecoration(
             color: Colors.transparent,
-            border: const Border.fromBorderSide(BorderSide(color: AppColors.red)),
+            border:
+                const Border.fromBorderSide(BorderSide(color: AppColors.red)),
             borderRadius: BorderRadius.circular(10),
           ),
           child: TextButton(
             onPressed: () {
-              locator<AuthCubit>().clearToken();
-              while (context.canPop()) {
-                context.navigator.pop();
+              try {
+                print("signout");
+                locator<AuthCubit>().clearToken();
+                locator<AuthCubit>().getToken();
+                while (context.canPop()) {
+                  context.navigator.pop();
+                }
+                context.navigator.pushAuth();
+              } catch (e) {
+                print(e);
               }
-              context.navigator.pushAuth();
             },
             style: ButtonStyle(
-              overlayColor: MaterialStatePropertyAll(AppColors.red.withOpacity(0.4)),
+              overlayColor:
+                  MaterialStatePropertyAll(AppColors.red.withOpacity(0.4)),
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSize.getWidth(context) / 30, vertical: AppSize.getHeight(context) / 50),
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppSize.getWidth(context) / 30,
+                  vertical: AppSize.getHeight(context) / 50),
               child: Center(
                 child: Text(
                   localizations.signout_text,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.red),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: AppColors.red),
                 ),
               ),
             ),

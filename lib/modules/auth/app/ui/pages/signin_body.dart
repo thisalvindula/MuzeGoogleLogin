@@ -36,7 +36,8 @@ class _SigninBodyState extends State<SigninBody> {
   Widget build(BuildContext context) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 10),
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 10),
       child: Form(
         key: formKey,
         child: Column(
@@ -46,7 +47,8 @@ class _SigninBodyState extends State<SigninBody> {
               title: localizations.email_username_text,
               hintText: "texte@mail.com / nom.exemple",
               validator: (value) {
-                if (value == null || value.isEmpty) return localizations.empty_email_username_text;
+                if (value == null || value.isEmpty)
+                  return localizations.empty_email_username_text;
                 return emailValidatorMessage;
               },
             ),
@@ -59,7 +61,8 @@ class _SigninBodyState extends State<SigninBody> {
               title: localizations.password_text,
               hintText: localizations.password_text,
               validator: (value) {
-                if (value == null || value.isEmpty) return localizations.empty_password_text;
+                if (value == null || value.isEmpty)
+                  return localizations.empty_password_text;
                 return passwordValidatorMessage;
               },
             ),
@@ -75,16 +78,20 @@ class _SigninBodyState extends State<SigninBody> {
                       locator<AuthCubit>().changeLoading(true);
 
                       try {
-                        await locator<AuthCubit>().login(username: emailController.text, password: passwordController.text);
-
+                        await locator<AuthCubit>().login(
+                            username: emailController.text,
+                            password: passwordController.text);
                         emailValidatorMessage = null;
                         passwordValidatorMessage = null;
                         formKey.currentState!.validate();
                         log("token : ${state.token}");
                         log("token : ${locator<AuthCubit>().state.token}");
-                        if (context.mounted && locator<AuthCubit>().state.token.isNotEmpty) {
-                          CustomSnackBar(context, text: localizations.successfull_login);
-                          StartAppStatus status = await locator<AuthCubit>().getStatus();
+                        if (context.mounted &&
+                            locator<AuthCubit>().state.token.isNotEmpty) {
+                          CustomSnackBar(context,
+                              text: localizations.successfull_login);
+                          StartAppStatus status =
+                              await locator<AuthCubit>().getStatus();
                           log("$status");
                           if (context.mounted) {
                             switch (status) {
@@ -105,15 +112,18 @@ class _SigninBodyState extends State<SigninBody> {
                         }
                         locator<AuthCubit>().changeLoading(false);
                       } catch (e) {
-                        emailValidatorMessage = localizations.not_correct_email_username_text;
-                        passwordValidatorMessage = localizations.not_correct_password_text;
+                        emailValidatorMessage =
+                            localizations.not_correct_email_username_text;
+                        passwordValidatorMessage =
+                            localizations.not_correct_password_text;
 
                         formKey.currentState!.validate();
 
                         emailValidatorMessage = null;
                         passwordValidatorMessage = null;
 
-                        CustomSnackBar(context, text: localizations.error_try_again_later);
+                        CustomSnackBar(context,
+                            text: localizations.error_try_again_later);
                         locator<AuthCubit>().changeLoading(false);
                         return;
                       }
@@ -131,7 +141,11 @@ class _SigninBodyState extends State<SigninBody> {
               onTap: () => onForgotPassword(context),
               child: Text(
                 localizations.forgot_password_text,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600, fontSize: 16, height: 26 / 16, color: AppColors.primary[800]),
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    height: 26 / 16,
+                    color: AppColors.primary[800]),
               ),
             ),
             SizedBox(

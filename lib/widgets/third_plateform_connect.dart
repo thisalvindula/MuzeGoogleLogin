@@ -26,6 +26,9 @@ class _ThirdPlateformConnectState extends State<ThirdPlateformConnect> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   User? _user;
+  late String userName;
+  late String password;
+  late var user;
 
   @override
   void initState() {
@@ -33,9 +36,29 @@ class _ThirdPlateformConnectState extends State<ThirdPlateformConnect> {
     super.initState();
     _auth.authStateChanges().listen((event) {
       _user = event;
-      print("initstate");
-      print(_user);
+      userName = _user?.email ?? "";
+      password = _user?.uid ?? "";
+      login();
     });
+  }
+
+  void login() async {
+    if (_user != null) {
+      try {
+        await locator<AuthCubit>()
+            .login(username: userName, password: password);
+        print("object");
+        print(locator<AuthCubit>().getToken());
+        // await locator<AuthCubit>().register(
+        //   username: userName,
+        //   email: userName,
+        //   password: password,
+        //   passwordConfirmation: password,
+        // );
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
   void _handleGoogleSignIn() {
